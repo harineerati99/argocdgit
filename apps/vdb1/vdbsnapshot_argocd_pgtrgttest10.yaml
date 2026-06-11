@@ -1,0 +1,12 @@
+apiVersion: actions.delphix.com/v1alpha1
+kind: VDBSnapshot
+metadata:
+  name: pgtrgt-vdb-test10-snap11   # Change: {vdb-name}-snap-{N}
+  namespace: pg-oper-driver
+spec:
+  autoCheckpoint: true
+  captureLSN: true
+  vdbRef:
+    kind: PostgresVDB
+    name: pgtrgt-vdb-test10         # Change: target VDB name
+    namespace: pg-oper-driver
