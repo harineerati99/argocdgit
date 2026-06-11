@@ -1,0 +1,56 @@
+#PostgresVDB — DCT (Delphix Continuous Compliance / Data Control Tower) source
+#
+# Provisions a new PostgresVDB from a Delphix dSource managed by DCT.
+# The source reference uses the format "engineName:dSourceName".
+#
+# envName is required for dct-source type. It identifies the Delphix
+# environment where the VDB will be provisioned.
+#
+# Apply:
+#   kubectl apply -f postgresvdb-dct-source.yaml
+
+apiVersion: core.delphix.com/v1alpha1
+kind: PostgresVDB
+metadata:
+  name: pgtrgt-vdb-test10
+  namespace: pg-oper-driver
+spec:
+  OwnershipSpec: "999:999"
+
+  source:
+    type: dct-source
+    reference: "delphix-cde:PGTRGT"   # Format: engineName:dSourceName
+
+  envName: "pgrestgt"               # Required for dct-source
+  vdbGroupName: "azpgvdb"
+
+  database:
+    name: postgres
+    user: postgres
+    password: "postgres"
+    # passwordSecretRef: pg-password-secret
+
+  port: 5550
+  image: postgres:15.13
+  pvcStorageSize: 1Gi
+  mountPath: /mnt/pgtrgt-vdb-test10
+
+  # Provision from specific DCT snapshot
+  #snapshotID: "2-APPDATA_SNAPSHOT-44"
+
+  resources:
+    requests:
+      cpu: 500m
+      memory: 1Gi
+    limits:
+      cpu: 500m
+      memory: 1Gi
+
+  # PostgreSQL configuration overrides
+  postgresConfig:
+    - name: max_connections
+      value: "200"
+    - name: shared_buffers
+      value: "512MB"
+    - name: work_mem
+      value: "16MB"
