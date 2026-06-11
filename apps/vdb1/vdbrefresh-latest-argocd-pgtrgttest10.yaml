@@ -1,0 +1,24 @@
+# VDBRefresh — refresh to latest snapshot (default)
+#
+# Refreshes a PostgresVDB to the most recent available snapshot.
+# Omitting spec.snapshotRef causes the controller to use LATEST.
+#
+# The VDB is stopped, refreshed, and restarted automatically.
+#
+# Apply:
+#   kubectl apply -f vdbrefresh-latest.yaml -n pg-oper-driver
+#
+# Check status:
+#   kubectl get vdbrefreshes
+#   kubectl describe vdbrefresh pgtrgtvdb2-refresh-latest -n pg-oper-driver
+
+apiVersion: actions.delphix.com/v1alpha1
+kind: VDBRefresh
+metadata:
+  name: pgtrgtvdbtest10-refresh-latest
+  namespace: pg-oper-driver
+spec:
+  vdbRef:
+    kind: PostgresVDB
+    name: pgtrgt-vdb-test10     # Must match an existing PostgresVDB
+    namespace: pg-oper-driver         # Optional; defaults to the refresh's namespace
