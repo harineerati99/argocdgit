@@ -15,7 +15,7 @@
 apiVersion: actions.delphix.com/v1alpha1
 kind: VDBRefresh
 metadata:
-  name: pgtrgtvdbtest10-refresh-latest
+  name: pgtrgtvdbtest10-refresh-latest01
   namespace: pg-oper-driver
 spec:
   vdbRef:
