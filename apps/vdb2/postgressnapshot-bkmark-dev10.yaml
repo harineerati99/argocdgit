@@ -1,0 +1,36 @@
+# PostgresSnapshot — basic example
+#
+# Takes a DCT-managed bookmark snapshot of a PostgresVDB (K8s-provisioned VDB).
+# The resulting DCT bookmark name appears in .status.dctBookmarkName and can be
+# used as snapshotRef.type: dct-bookmark in a PostgresRefresh.
+#
+# autoCheckpoint: true (default) issues a PostgreSQL CHECKPOINT before the snapshot.
+# captureLSN:     true (default) records the LSN at snapshot time.
+#
+# Apply:
+#   kubectl apply -f postgressnapshot-bkmark-template.yaml
+#
+# Check status:
+#   kubectl get postgressnapshots
+#   kubectl describe postgressnapshot pgtrgtvdb1-bm-snap-01
+
+apiVersion: actions.delphix.com/v1alpha1
+kind: PostgresSnapshot
+metadata:
+  name: pgtrgt-dev10-bkmark-01
+  namespace: pg-oper-driver
+spec:
+  vdbRef:
+    kind: PostgresVDB
+    name: pgtrgt-vdb-dev10     # Must match an existing PostgresVDB name
+    namespace: pg-oper-driver
+
+  autoCheckpoint: true
+  captureLSN: true
+
+  # Optional: Override the database and user for snapshot tasks
+  # database: appdb
+  # user: postgres
+
+  # Optional: Specify the VolumeSnapshotClass
+  # volumeSnapshotClassName: "csi-aws-vsc"
